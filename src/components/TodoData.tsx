@@ -1,15 +1,29 @@
 import React from 'react'
 import { useTodos } from '../store/Todos'
+import { useSearchParams } from 'react-router-dom';
 
 function TodoData() {
 
-  const {todos} = useTodos();
+  const {todos ,toggleTodoascomplete ,handleDeleteTodo} = useTodos();
+  const [searchParams] = useSearchParams();
+  let todoData = searchParams.get("todos")
+    console.log("vinay search params" , todoData)
+
+    let filterData = todos;
+
+    if(todoData === 'active'){
+        filterData = filterData.filter((task) => !task.complete)
+    }
+
+    if(todoData === "complete"){
+        filterData = filterData.filter((task)=>task.complete)
+    }
 
   return (
     <div>
         <ul>
             {
-                todos.map((todo)=>{
+                filterData.map((todo)=>{
                     return(
                         <li key={todo.id}>
                             <input  type='checkbox' id={`todo-${todo.id}`}
